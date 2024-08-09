@@ -1,31 +1,40 @@
-import { User } from "../models/user.model.js";
+import { User } from "../models/User.js";
 import bcrypt from 'bcrypt'; 
+import jwt from "jsonwebtoken"
 
 export const createUser = async (req, res) => {
     try {
-        const { full_name, email, password} = req.body
-        const exist = await User.findOne({email})
+        const { fname, email, password } = req.body;
 
-        if (exist){
+        if (!fname || !email || !password) {
             return res.status(400).send({
-                message: "User already exist"
-            })
+                message: "All fields are required"
+            });
         }
-        const hashedPassword = await bcrypt.hash(password, 10)
+
+        const exist = await User.findOne({ email });
+
+        if (exist) {
+            return res.status(400).send({
+                message: "User already exists"
+            });
+        }
+
+        const hashedPassword = await bcrypt.hash(password, 10);
         const user = await User.create({
-            full_name,
-            email,
-            password : hashedPassword
-        })
-        user.save()
-        res.status(200).send({
+            fname: fname,
+            email: email,
+            password: hashedPassword
+        });
+
+        res.status(201).send({
             user,
-            message: "success"
-        })
-    }catch(e){
+            message: "User created successfully"
+        });
+    } catch (e) {
         res.status(500).send({
             message: e.message
-        })
+        });
     }
 }
 
