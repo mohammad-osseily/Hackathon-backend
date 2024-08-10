@@ -1,62 +1,31 @@
 import mongoose, { Schema } from "mongoose";
 
+const reviewSchema = new Schema({
+  translatedReview: String,
+  sentiment: String,
+  sentimentPolarity: Number,
+  sentimentSubjectivity: Number,
+});
+
 const appSchema = new Schema({
-  app: {
-    type: String,
-    required: true,
-    unique: true,
-  },
-  category: {
-    type: String,
-    required: true,
-  },
-  rating: {
-    type: Number,
-    min: 0,
-    max: 5,
-    default: null,
-  },
-  reviews: {
-    type: Number,
-    default: 0,
-  },
-  size: {
-    type: String,
-    default: "Varies with device",
-  },
-  installs: {
-    type: String,
-    required: true,
-  },
+  app: { type: String, required: true },
+  category: { type: String, required: true },
+  rating: { type: Number, required: true },
+  reviews: { type: Number, required: true },
+  size: { type: String },
+  installs: { type: String },
+  appRreviews: [reviewSchema],
   type: {
     type: String,
-    enum: ["Free", "Paid"],
+    enum: ["Free", "Paid"], // List valid values
     required: true,
   },
-  price: {
-    type: String,
-    default: "0",
-  },
-  contentRating: {
-    type: String,
-    required: true,
-  },
-  genres: {
-    type: String,
-    required: true,
-  },
-  lastUpdated: {
-    type: Date,
-    required: true,
-  },
-  currentVer: {
-    type: String,
-    required: true,
-  },
-  androidVer: {
-    type: String,
-    required: true,
-  },
+  price: { type: String },
+  contentRating: { type: String },
+  genres: { type: String },
+  lastUpdated: { type: Date },
+  currentVer: { type: String },
+  androidVer: { type: String },
 });
 
 const App = mongoose.model("App", appSchema);
