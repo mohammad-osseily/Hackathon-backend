@@ -1,10 +1,6 @@
 import mongoose, {Schema} from "mongoose";
 
-const reviewSchema = new Schema({
-    translatedReview: String,
-    sentiment: String,
-    sentimentPolarity: Number,
-    sentimentSubjectivity: Number
-})
+const appReviewsSchema = new Schema({}, { strict: false });
 
-export default mongoose.model('')
+
+export default mongoose.model('AppReview', appReviewsSchema )
