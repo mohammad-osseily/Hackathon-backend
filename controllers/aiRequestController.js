@@ -23,3 +23,26 @@ export const createRequest = async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 };
+
+export const getById = async (req, res) => {
+  const { user_id } = req.params;
+
+  try {
+    const userExists = await User.findById(user_id);
+    if (!userExists) {
+      return res.status(404).json({ error: "user not found" });
+    }
+
+    const latestRequest = await Request.findOne({ user_id }).sort({
+      createdAt: -1,
+    });
+
+    if (!latestRequest) {
+      return res.status(404).json({ error: "request not found" });
+    }
+
+    res.status(200).json(latestRequest);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
