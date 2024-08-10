@@ -1,21 +1,22 @@
-import fs from 'fs';
-import csv from 'csv-parser';
-import mongoose from 'mongoose';
-import App from '../models/App.js';
-import databaseConnection from '../connection.js';
+import fs from "fs";
+import csv from "csv-parser";
+import mongoose from "mongoose";
+import App from "../models/App.js";
+import databaseConnection from "../connection.js";
 
 // Connect to MongoDB
 
-const csvFilePath = "C:/Users/1/Downloads/data/googleplaystore_user_reviews.csv";
+const csvFilePath =
+  "C:/Users/1/Downloads/data/googleplaystore_user_reviews.csv";
 
 const saveCSVData = async () => {
-  await databaseConnection()
+  await databaseConnection();
 
   const apps = [];
 
   fs.createReadStream(csvFilePath)
     .pipe(csv())
-    .on('data', (row) => {
+    .on("data", (row) => {
       apps.push({
         app: row.App,
         category: row.Category,
@@ -25,20 +26,20 @@ const saveCSVData = async () => {
         installs: row.Installs,
         type: row.Type,
         price: row.Price,
-        contentRating: row['Content Rating'],
+        contentRating: row["Content Rating"],
         genres: row.Genres,
-        lastUpdated: new Date(row['Last Updated']),
-        currentVer: row['Current Ver'],
-        androidVer: row['Android Ver'],
+        lastUpdated: new Date(row["Last Updated"]),
+        currentVer: row["Current Ver"],
+        androidVer: row["Android Ver"],
       });
     })
-    .on('end', async () => {
+    .on("end", async () => {
       try {
         await App.insertMany(apps);
-        console.log('Data successfully imported to MongoDB');
+        console.log("Data successfully imported to MongoDB");
         mongoose.connection.close();
       } catch (err) {
-        console.error('Error inserting data into MongoDB:', err);
+        console.error("Error inserting data into MongoDB:", err);
       }
     });
 };
