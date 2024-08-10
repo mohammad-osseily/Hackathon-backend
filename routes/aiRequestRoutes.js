@@ -10,6 +10,6 @@ import { authenticateJWT } from "../middleware/authenticatJWT.js";
 const router = express.Router();
 
 router.post("/", createRequest);
-router.get("/get", authenticateJWT, getById);
+router.get("/get", getById);
 
 export default router;
