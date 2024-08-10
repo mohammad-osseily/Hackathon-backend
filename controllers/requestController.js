@@ -17,8 +17,8 @@ export const createRequest = async (req, res) => {
       description,
     });
 
-    await newClass.save();
-    res.status(201).json(newClass);
+    await newRequest.save();
+    res.status(201).json(newRequest);
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
