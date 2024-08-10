@@ -1,52 +1,45 @@
 import fs from 'fs';
 import csv from 'csv-parser';
-import mongoose from 'mongoose';
 import databaseConnection from '../connection.js';
-import App from '../models/App.js';
+import appReview from '../models/appReview.js';
 
 const csvFilePath = 'C:/Users/1/Downloads/data/googleplaystore_user_reviews.csv';
 
 const saveReviewsCSV = async()=>{
     await databaseConnection()
 
-    const appReviews = new Map();
+    const reviewsByApp = {};
 
     fs.createReadStream(csvFilePath)  
-    .pipe(csv())
-    .on('data', (row) => {
+      .pipe(csv())
+      .on('data', (row) => {
         const { App, Translated_Review, Sentiment, Sentiment_Polarity, Sentiment_Subjectivity } = row;
-
-        
-        if (!appReviews.has(App)) {
-        appReviews.set(App, []);
+    
+        if (!reviewsByApp[App]) {
+          reviewsByApp[App] = [];
         }
-
-        
-        appReviews.get(App).push({
-        Translated_Review,
-        Sentiment,
-        Sentiment_Polarity,
-        Sentiment_Subjectivity
+    
+        reviewsByApp[App].push({
+          Translated_Review,
+          Sentiment,
+          Sentiment_Polarity,
+          Sentiment_Subjectivity
         });
-    })
+      })
     .on('end', async () => {
-        console.log('CSV file successfully processed.');
+        console.log('CSV file successfully processed.')
 
-        for (const [appName, reviews] of appReviews.entries()) {
-        try {
-            await App.updateOne(
-            { app: appName },  // Find by app name
-            { $set: { reviews } },  // Update or add the reviews field
-            { upsert: true }  // Create the document if it doesn't exist
-            );
-            console.log(`Updated ${appName} with reviews.`);
-        } catch (err) {
-            console.error(`Error updating ${appName}:`, err);
-        }
-        }
-
-        console.log('All documents updated.');
-        mongoose.connection.close();
+        const apps = Object.entries(reviewsByApp).map(([appName, reviews]) => {
+            return { [appName]: reviews };
+          });
+          try {
+            await appReview.insertMany(apps);
+            console.log('Data successfully imported to MongoDB');
+            process.exit(0); 
+          } catch (err) {
+            console.error('Error inserting data into MongoDB:', err);
+            process.exit(1); 
+          }
     });
 
 

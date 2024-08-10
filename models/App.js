@@ -1,12 +1,5 @@
 import mongoose, { Schema } from "mongoose";
 
-const reviewSchema = new Schema({
-  translatedReview: String,
-  sentiment: String,
-  sentimentPolarity: Number,
-  sentimentSubjectivity: Number,
-});
-
 const appSchema = new Schema({
   app: { type: String, required: true },
   category: { type: String, required: true },
@@ -14,7 +7,6 @@ const appSchema = new Schema({
   reviews: { type: Number, required: true },
   size: { type: String },
   installs: { type: String },
-  appRreviews: [reviewSchema],
   type: {
     type: String,
     enum: ["Free", "Paid"], // List valid values
