@@ -25,12 +25,12 @@ export const createRequest = async (req, res) => {
 };
 
 export const getById = async (req, res) => {
-  const { user_id } = req.params;
-
   try {
+    const user_id = req.user._id; // Extract the user ID from the decoded token
+
     const userExists = await User.findById(user_id);
     if (!userExists) {
-      return res.status(404).json({ error: "user not found" });
+      return res.status(404).json({ error: "User not found" });
     }
 
     const latestRequest = await Request.findOne({ user_id }).sort({
@@ -38,7 +38,7 @@ export const getById = async (req, res) => {
     });
 
     if (!latestRequest) {
-      return res.status(404).json({ error: "request not found" });
+      return res.status(404).json({ error: "Request not found" });
     }
 
     res.status(200).json(latestRequest);

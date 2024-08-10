@@ -1,11 +1,15 @@
 import express from "express";
-import { createRequest } from "./../controllers/aiRequestController.js";
+import {
+  createRequest,
+  getById,
+} from "./../controllers/aiRequestController.js";
 
 import { protect } from "../middleware/protectRoutes.js";
+import { authenticateJWT } from "../middleware/authenticatJWT.js";
 
 const router = express.Router();
 
-router.post("/", protect, createRequest);
-router.post("/get", protect, createRequest);
+router.post("/", createRequest);
+router.get("/get", authenticateJWT, getById);
 
 export default router;
