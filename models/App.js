@@ -8,7 +8,6 @@ const appSchema = new Schema({
     reviews: { type: Number, required: true },
     size: { type: String },
     installs: { type: String },
-    appRreviews: [reviewSchema],
     type: {
       type: String,
       enum: ['Free', 'Paid'], // List valid values
