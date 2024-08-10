@@ -1,5 +1,5 @@
 import express from "express";
-import { createRequest } from "./../controllers/requestController.js";
+import { createRequest } from "./../controllers/airRquestController.js";
 
 import { protect } from "../middleware/protectRoutes.js";
 

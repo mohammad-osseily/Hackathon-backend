@@ -2,7 +2,7 @@ import express, { json } from "express";
 import dotenv from "dotenv";
 import databaseConnection from "./connection.js";
 import userRoutes from './routes/userRoutes.js'
-import aiRequestRoutes from './routes/requestRoutes.js'
+import aiRequestRoutes from './routes/aiRequestRoutes.js'
 import aiResponsetRoutes from './routes/aiResponseRoutes.js'
 
 
