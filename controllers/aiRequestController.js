@@ -25,8 +25,7 @@ export const createRequest = async (req, res) => {
 };
 
 export const getById = async (req, res) => {
-  const user_id = req.user._id;
-
+  const user_id = req.user.id;  
   try {
     const userExists = await User.findById(user_id);
     if (!userExists) {
