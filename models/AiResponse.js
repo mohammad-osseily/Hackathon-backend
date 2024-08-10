@@ -1,10 +1,9 @@
 import mongoose, {Schema} from "mongoose";
-import { User } from "./User.js";
 
-const aiResponse = Schema({
+const aiResponse = new Schema({
     user_id :{
         type: mongoose.Schema.Types.ObjectId,
-        ref: User,
+        ref: 'User',
         required: true
     },
     prediction: {
@@ -15,8 +14,8 @@ const aiResponse = Schema({
         {appName: {
             type: String,
             required: true},
-        description: {type: Sting}
+        description: {type: String}
         }] 
 })
 
-export default mongoose.Schema('AiResponse', aiResponse)
+export default mongoose.model('AiResponse', aiResponse)
