@@ -1,5 +1,5 @@
 import AiResponse from "../models/AiResponse.js"
-import { User } from "../models/User.js"
+import User from "../models/User.js"
 
 export const createAiResponse = async  (req, res)=>{
     const {user_id, prediction, similarApps} = req.body
