@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-const requestSchema = new mongoose.Schema(
+const aiRequestSchema = new mongoose.Schema(
   {
     user_id: {
       type: mongoose.Schema.Types.ObjectId,
@@ -25,4 +25,4 @@ const requestSchema = new mongoose.Schema(
   }
 );
 
-export default mongoose.model("Request", requestSchema);
+export default mongoose.model("AiRequest", aiRequestSchema);
