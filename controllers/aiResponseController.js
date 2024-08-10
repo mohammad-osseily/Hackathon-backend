@@ -23,3 +23,18 @@ export const createAiResponse = async  (req, res)=>{
         res.status(500).json({error: error.message})
     }
 }
+
+export const getAiResponse = async (req, res)=>{
+    const userId = req.user.id
+    
+    try {
+        const response = await AiResponse.findById(userId)
+        if(!response){
+            return res.status(404).json({error: "response not found"})
+        }
+        res.status(200).json({response})
+        
+    } catch (error) {
+        res.status(500).json({error: error.message})
+    }
+}

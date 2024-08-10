@@ -1,9 +1,10 @@
 import { Router } from "express";
-import AiResponse from "../models/AiResponse.js";
+import { createAiResponse, getAiResponse } from "../controllers/aiResponseController.js";
 
 
 const router = new Router()
 
-router.post('/create', AiResponse)
+router.post('/create', createAiResponse)
+router.get('/', getAiResponse)
 
 export default router

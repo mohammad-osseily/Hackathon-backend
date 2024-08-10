@@ -25,6 +25,7 @@ export const createRequest = async (req, res) => {
 };
 
 export const getById = async (req, res) => {
+  const user_id = req.user.id;
   try {
     const user_id = req.user._id; // Extract the user ID from the decoded token
 
