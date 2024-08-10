@@ -3,11 +3,10 @@ import csv from "csv-parser";
 import mongoose from "mongoose";
 import App from "../models/App.js";
 import databaseConnection from "../connection.js";
-
+import csv from "/home/mhmdosseily/Downloads/data/googleplaystore.csv";
 // Connect to MongoDB
 
-const csvFilePath =
-  "C:/Users/1/Downloads/data/googleplaystore_user_reviews.csv";
+const csvFilePath = "/home/mhmdosseily/Downloads/data/googleplaystore.csv";
 
 const saveCSVData = async () => {
   await databaseConnection();

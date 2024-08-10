@@ -1,11 +1,10 @@
-import mongoose, {Schema} from 'mongoose';
-
+import mongoose, { Schema } from "mongoose";
 
 const appSchema = new Schema({
   app: {
     type: String,
     required: true,
-    unique: true, 
+    unique: true,
   },
   category: {
     type: String,
@@ -23,7 +22,7 @@ const appSchema = new Schema({
   },
   size: {
     type: String,
-    default: 'Varies with device',
+    default: "Varies with device",
   },
   installs: {
     type: String,
@@ -31,12 +30,12 @@ const appSchema = new Schema({
   },
   type: {
     type: String,
-    enum: ['Free', 'Paid'],
+    enum: ["Free", "Paid"],
     required: true,
   },
   price: {
     type: String,
-    default: '0',
+    default: "0",
   },
   contentRating: {
     type: String,
@@ -60,7 +59,6 @@ const appSchema = new Schema({
   },
 });
 
-
-const App = mongoose.model('App', appSchema);
+const App = mongoose.model("App", appSchema);
 
 export default App;
