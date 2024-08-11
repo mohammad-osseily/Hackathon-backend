@@ -2,7 +2,23 @@ import Request from "../models/AiRequest.js";
 import User from "../models/User.js";
 
 export const createRequest = async (req, res) => {
-  const { user_id, title, category, description } = req.body;
+  const {
+    user_id,
+    androidVer,
+    size,
+    price,
+    categoryEncoded,
+    typeFree,
+    typePaid,
+    contentRatingsAdultsOnly18,
+    contentRatingsEveryone,
+    contentRatingsEveryone10,
+    contentRatingsMature17,
+    contentRatingsTeen,
+    contentRatingsUnrated,
+    lastUpdatedYear,
+    lastUpdatedMonth,
+  } = req.body;
 
   try {
     const userExists = await User.findById(user_id);
@@ -12,9 +28,20 @@ export const createRequest = async (req, res) => {
 
     const newRequest = new Request({
       user_id,
-      title,
-      category,
-      description,
+      androidVer,
+      size,
+      price,
+      categoryEncoded,
+      typeFree,
+      typePaid,
+      contentRatingsAdultsOnly18,
+      contentRatingsEveryone,
+      contentRatingsEveryone10,
+      contentRatingsMature17,
+      contentRatingsTeen,
+      contentRatingsUnrated,
+      lastUpdatedYear,
+      lastUpdatedMonth,
     });
 
     await newRequest.save();
