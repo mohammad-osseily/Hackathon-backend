@@ -5,7 +5,7 @@ import appReview from '../models/appReview.js';
 
 const csvFilePath = 'C:/Users/1/Downloads/data/googleplaystore_user_reviews.csv';
 
-const saveReviewsCSV = async()=>{
+export const saveReviewsCSV = async()=>{
     await databaseConnection()
 
     const reviewsByApp = {};
@@ -45,4 +45,3 @@ const saveReviewsCSV = async()=>{
 
 }
 
-saveReviewsCSV()

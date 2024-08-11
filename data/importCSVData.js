@@ -5,7 +5,7 @@ import App from '../models/App.js';
 
 const csvFilePath = 'C:/Users/1/Downloads/data/googleplaystore.csv'; // Use the correct path
 
-const saveCSVData = async () => {
+export const saveCSVData = async () => {
   await databaseConnection(); // Ensure database connection is established
 
   const apps = [];
@@ -45,4 +45,3 @@ const saveCSVData = async () => {
     });
 };
 
-saveCSVData();

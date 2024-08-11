@@ -25,10 +25,10 @@ const saveCSVData = async () => {
         installs: row.Installs,
         type: row.Type,
         price: row.Price,
-        contentRating: row["Content Rating"],
+        contentRating: row["Conteurrent Rating"],
         genres: row.Genres,
         lastUpdated: new Date(row["Last Updated"]),
-        currentVer: row["Current Ver"],
+        currentVer: row["Cnt Ver"],
         androidVer: row["Android Ver"],
       });
     })
