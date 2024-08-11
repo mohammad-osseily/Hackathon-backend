@@ -7,35 +7,81 @@ const aiRequestSchema = new mongoose.Schema(
       ref: "User",
       required: true,
     },
-    category: {
+    androidVer: {
       type: String,
       required: true,
     },
-    size: { 
-      type: String,
-    },
-    price: { 
-      type: Number ,
-      required: true,
-
-    },
-    contentRating: { 
-      type: String,
+    size: {
+      type: Number,
       required: true,
     },
-    currentVer: { type: String },
-    androidVer: { 
-      type: String,
+    price: {
+      type: Number,
       required: true,
     },
-    type: {
-      type: String,
-      enum: ['Free', 'Paid'], 
-      required: true
+    categoryEncoded: {
+      type: Number,
+      required: true,
     },
-    lastUpdated: { type: Date },
-
-  },
+    typeFree: {
+      type: Number,
+      enum: [0, 1],
+      default: 0,
+      required: true,
+    },
+    typePaid: {
+      type: Number,
+      enum: [0, 1],
+      default: 0,
+      required: true,
+    },
+    contentRatingsAdultsOnly18: {
+      type: Number,
+      enum: [0, 1],
+      default: 0,
+      required: true,
+    },
+    contentRatingsEveryone: {
+      type: Number,
+      enum: [0, 1],
+      default: 0,
+      required: true,
+    },
+    contentRatingsEveryone10: {
+      type: Number,
+      enum: [0, 1],
+      default: 0,
+      required: true,
+    },
+    contentRatingsMature17: {
+      type: Number,
+      enum: [0, 1],
+      default: 0,
+      required: true,
+    },
+    contentRatingsTeen: {
+      type: Number,
+      enum: [0, 1],
+      default: 0,
+      required: true,
+    },
+    contentRatingsUnrated: {
+      type: Number,
+      enum: [0, 1],
+      default: 0,
+      required: true,
+    },
+    lastUpdatedYear: {
+      type: Number,
+      required: true,
+    },
+    lastUpdatedMonth: {
+      type: Number,
+      required: true,
+    },
+  }, {
+    timestamps: true,
+  }
   
 );
 
