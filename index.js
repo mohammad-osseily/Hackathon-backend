@@ -1,7 +1,7 @@
 import express, { json } from "express";
 import dotenv from "dotenv";
 import cors from "cors";
-import cron from "node-cron"
+import cron from "node-cron";
 
 import databaseConnection from "./connection.js";
 import userRoutes from "./routes/userRoutes.js";
@@ -13,16 +13,15 @@ import { saveReviewsCSV } from "./data/importCSVReviews.js";
 
 dotenv.config();
 
-//function to update apps and appReviews collections at midnight 
+//function to update apps and appReviews collections at midnight
 function importDataAndUpdateDB() {
-  console.log('Running the import and update process...');
-  
+  console.log("Running the import and update process...");
 
-  saveCSVData()  
-  saveReviewsCSV()
+  saveCSVData();
+  saveReviewsCSV();
 }
-cron.schedule('09 19 * * *', () => {
-  console.log('Cron job started at midnight');
+cron.schedule("23 00 * * *", () => {
+  console.log("Cron job started at midnight");
   importDataAndUpdateDB();
 });
 
