@@ -6,16 +6,14 @@ const aiResponse = new Schema({
         ref: 'User',
         required: true
     },
-    prediction: {
-        type: String,
+    rating: {
+        type: Number,
         required: true
     },
-    similarApps: [
-        {appName: {
-            type: String,
-            required: true},
-        description: {type: String}
-        }] 
+    numberOfInstalls:{
+        type: Number,
+        required: true
+    }
 })
 
 export default mongoose.model('AiResponse', aiResponse)
