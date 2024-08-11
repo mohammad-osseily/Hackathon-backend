@@ -1,4 +1,4 @@
-import { getApps } from "../controllers/appDataController.js";
+import { getApps, getReviewByAppName } from "../controllers/appDataController.js";
 import { Router } from "express";
 
 const router = new Router();
