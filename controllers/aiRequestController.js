@@ -2,6 +2,7 @@ import axios from "axios";
 import Request from "../models/AiRequest.js";
 import User from "../models/User.js";
 import AiRequest from "../models/AiRequest.js";
+import AiResponse from "../models/AiResponse.js";
 
 export const createRequest = async (req, res) => {
   const user_id = req.user.id;
@@ -70,6 +71,14 @@ export const createRequest = async (req, res) => {
     // Send the formatted data to the ML model (Uncomment and use when needed)
     const mlEndpointUrl = 'http://localhost:7500/predict/rating'; 
     const mlResponse = await axios.post(mlEndpointUrl, formattedData);
+
+    const aiResponse = new AiResponse({
+      user_id,
+      rating_predictions: mlResponse.data.rating_predictions,
+      installs_predictions: mlResponse.data.installs_predictions,
+    });
+
+    await aiResponse.save();
 
     res.status(201).json({
       message: "Request created successfully",
