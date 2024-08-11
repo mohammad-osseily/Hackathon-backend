@@ -7,7 +7,6 @@ const csvFilePath = 'C:/Users/1/Downloads/data/googleplaystore_user_reviews.csv'
 
 export const saveReviewsCSV = async()=>{
     await databaseConnection()
-
     const reviewsByApp = {};
 
     fs.createReadStream(csvFilePath)  
