@@ -1,5 +1,5 @@
 import express from "express";
-import { createRequest, getById } from "./../controllers/aiRequestController.js";
+import { createRequest, getById } from "../controllers/aiRequestController.js";
 
 import { protect } from "../middleware/protectRoutes.js";
 

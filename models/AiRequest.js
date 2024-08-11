@@ -7,22 +7,36 @@ const aiRequestSchema = new mongoose.Schema(
       ref: "User",
       required: true,
     },
-    title: {
-      type: String,
-      required: true,
-    },
     category: {
       type: String,
       required: true,
     },
-    description: {
+    size: { 
+      type: String,
+    },
+    price: { 
+      type: String ,
+      required: true,
+
+    },
+    contentRating: { 
+      type: String,
+      required: true,
+     },
+    currentVer: { type: String },
+    androidVer: { 
       type: String,
       required: true,
     },
+    type: {
+      type: String,
+      enum: ['Free', 'Paid'], 
+      required: true
+    },
+    lastUpdated: { type: Date },
+
   },
-  {
-    timestamps: true,
-  }
+  
 );
 
 export default mongoose.model("AiRequest", aiRequestSchema);
