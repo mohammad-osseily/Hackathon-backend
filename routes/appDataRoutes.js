@@ -1,7 +1,9 @@
-import express from "express";
+import { getApps } from "../controllers/appDataController.js";
+import { Router } from "express";
 
 const router = new Router();
 
-const router = express.Router();
+router.get("/", getApps);
+router.get("/:appName/appReview", getReviewByAppName);
 
 export default router;
