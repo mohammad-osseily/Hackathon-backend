@@ -1,6 +1,8 @@
-import express from "express";
+import { getPaginatedApps } from "../controllers/appDataController.js";
+import { Router } from "express";
 
+const router = new Router();
 
-const router = express.Router();
+router.get("/", getPaginatedApps);
 
 export default router;
