@@ -1,3 +1,4 @@
+import axios from "axios";
 import Request from "../models/AiRequest.js";
 import User from "../models/User.js";
 
@@ -45,7 +46,33 @@ export const createRequest = async (req, res) => {
     });
 
     await newRequest.save();
-    res.status(201).json(newRequest);
+     // Format the data to send to the ML model
+    const formattedData = {
+      Android_Ver: androidVer,
+      Size: size,
+      Price: price,
+      Category_encoded: categoryEncoded,
+      Type_Free: typeFree,
+      Type_Paid: typePaid,
+      Content_Ratings_Adults_only_18: contentRatingsAdultsOnly18,
+      Content_Ratings_Everyone: contentRatingsEveryone,
+      Content_Ratings_Everyone_10: contentRatingsEveryone10,
+      Content_Ratings_Mature_17: contentRatingsMature17,
+      Content_Ratings_Teen: contentRatingsTeen,
+      Content_Ratings_Unrated: contentRatingsUnrated,
+      last_updated_year: lastUpdatedYear,
+      last_updated_month: lastUpdatedMonth,
+    };
+        // Send the formatted data to the ML model
+        const mlEndpointUrl = 'https://your-ml-model-endpoint.com/predict'; 
+        const mlResponse = await axios.post(mlEndpointUrl, formattedData);
+    
+        res.status(201).json({
+          message: "Request created successfully",
+          savedRequest: newRequest,
+          mlResponse: mlResponse.data, 
+        });
+
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
@@ -72,3 +99,4 @@ export const getById = async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 };
+

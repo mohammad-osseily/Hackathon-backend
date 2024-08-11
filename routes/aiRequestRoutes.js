@@ -8,7 +8,7 @@ import { protect } from "../middleware/protectRoutes.js";
 
 const router = express.Router();
 
-router.post("/", protect, createRequest);
+router.post("/createRequest", protect, createRequest);
 router.get("/get", protect, getById);
 
 export default router;
