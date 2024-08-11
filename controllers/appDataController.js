@@ -51,6 +51,9 @@ export const getApps = async (req, res) => {
 export const getReviewByAppName = async (req, res) => {
   try {
     const { appName } = req.params;
+    const { page = 1, limit = 50 } = req.query;
+
+    // Find the app reviews by appName
     const reviews = await appReview.findOne({ [appName]: { $exists: true } });
 
     if (!reviews) {
@@ -58,7 +61,39 @@ export const getReviewByAppName = async (req, res) => {
         .status(404)
         .json({ message: `No reviews found for app: ${appName}` });
     }
-    return res.status(200).json(reviews[appName]);
+
+    const allReviews = reviews[appName];
+
+    // Calculate pagination values
+    const total = allReviews.length;
+    const currentPage = parseInt(page);
+    const perPage = parseInt(limit);
+    const skip = (currentPage - 1) * perPage;
+
+    // Paginate the reviews
+    const paginatedReviews = allReviews.slice(skip, skip + perPage);
+
+    const lastPage = Math.ceil(total / perPage);
+    const nextPage = currentPage < lastPage ? currentPage + 1 : null;
+    const prevPage = currentPage > 1 ? currentPage - 1 : null;
+
+    return res.status(200).json({
+      data: paginatedReviews,
+      total,
+      per_page: perPage,
+      current_page: currentPage,
+      last_page: lastPage,
+      next_page_url: nextPage
+        ? `${req.protocol}://${req.get("host")}${req.baseUrl}${
+            req.path
+          }?page=${nextPage}&limit=${perPage}`
+        : null,
+      prev_page_url: prevPage
+        ? `${req.protocol}://${req.get("host")}${req.baseUrl}${
+            req.path
+          }?page=${prevPage}&limit=${perPage}`
+        : null,
+    });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
