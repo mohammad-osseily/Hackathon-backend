@@ -82,8 +82,8 @@ export const createRequest = async (req, res) => {
 
     res.status(201).json({
       message: "Request created successfully",
-      newRequest,
-      mlResponse: mlResponse.data, // Uncomment when using the ML model
+      rating_predictions: mlResponse.data.rating_predictions,
+      installs_predictions: mlResponse.data.installs_predictions, // Uncomment when using the ML model
     });
   } catch (error) {
     res.status(500).json({ error: error.message });
