@@ -1,47 +1,73 @@
-import fs from 'fs';
-import csv from 'csv-parser';
-import databaseConnection from '../connection.js';
-import appReview from '../models/appReview.js';
+import fs from "fs";
+import csv from "csv-parser";
+import databaseConnection from "../connection.js";
+import appReview from "../models/appReview.js";
 
-const csvFilePath = 'C:/Users/1/Downloads/data/googleplaystore_user_reviews.csv';
+const csvFilePath =
+  "/home/mhmdosseily/Downloads/data/googleplaystore_user_reviews.csv";
 
-export const saveReviewsCSV = async()=>{
-    await databaseConnection()
+export const saveReviewsCSV = async () => {
+  await databaseConnection();
 
-    const reviewsByApp = {};
+  const bulkOps = [];
 
-    fs.createReadStream(csvFilePath)  
-      .pipe(csv())
-      .on('data', (row) => {
-        const { App, Translated_Review, Sentiment, Sentiment_Polarity, Sentiment_Subjectivity } = row;
-    
-        if (!reviewsByApp[App]) {
-          reviewsByApp[App] = [];
+  fs.createReadStream(csvFilePath)
+    .pipe(csv())
+    .on("data", (row) => {
+      const {
+        App,
+        Translated_Review,
+        Sentiment,
+        Sentiment_Polarity,
+        Sentiment_Subjectivity,
+      } = row;
+
+      // We use updateOne with a filter that checks if the review exists.
+      bulkOps.push({
+        updateOne: {
+          filter: { app: App, "reviews.Translated_Review": Translated_Review },
+          update: {
+            $set: {
+              "reviews.$.Sentiment": Sentiment,
+              "reviews.$.Sentiment_Polarity": Sentiment_Polarity,
+              "reviews.$.Sentiment_Subjectivity": Sentiment_Subjectivity,
+            },
+          },
+          upsert: false, // Do not insert if the review doesn't exist
+        },
+      });
+
+      // Add the review if it doesn't exist
+      bulkOps.push({
+        updateOne: {
+          filter: {
+            app: App,
+            reviews: { $not: { $elemMatch: { Translated_Review } } },
+          },
+          update: {
+            $push: {
+              reviews: {
+                Translated_Review,
+                Sentiment,
+                Sentiment_Polarity,
+                Sentiment_Subjectivity,
+              },
+            },
+          },
+          upsert: true, // Insert the app if it doesn't exist
+        },
+      });
+    })
+    .on("end", async () => {
+      try {
+        if (bulkOps.length > 0) {
+          await appReview.bulkWrite(bulkOps, { ordered: false });
+          console.log("Reviews successfully imported/updated in MongoDB");
         }
-    
-        reviewsByApp[App].push({
-          Translated_Review,
-          Sentiment,
-          Sentiment_Polarity,
-          Sentiment_Subjectivity
-        });
-      })
-    .on('end', async () => {
-        console.log('CSV file successfully processed.')
-
-        const apps = Object.entries(reviewsByApp).map(([appName, reviews]) => {
-            return { [appName]: reviews };
-          });
-          try {
-            await appReview.insertMany(apps);
-            console.log('Data successfully imported to MongoDB');
-            process.exit(0); 
-          } catch (err) {
-            console.error('Error inserting data into MongoDB:', err);
-            process.exit(1); 
-          }
+        process.exit(0);
+      } catch (err) {
+        console.error("Error processing reviews into MongoDB:", err);
+        process.exit(1);
+      }
     });
-
-
-}
-
+};
