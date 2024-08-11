@@ -1,8 +1,8 @@
-import { getPaginatedApps } from "../controllers/appDataController.js";
+import { getApps } from "../controllers/appDataController.js";
 import { Router } from "express";
 
 const router = new Router();
 
-router.get("/", getPaginatedApps);
+router.get("/", getApps);
 
 export default router;

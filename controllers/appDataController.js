@@ -1,7 +1,7 @@
 import App from "../models/App.js"; // Adjust the path to your model
 import mongoose from "mongoose";
 
-export const getPaginatedApps = async (req, res) => {
+export const getApps = async (req, res) => {
   const { page = 1, limit = 50 } = req.query; // Default to page 1, limit 50
 
   try {
