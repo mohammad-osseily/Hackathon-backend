@@ -19,9 +19,9 @@ async function importDataAndUpdateDB() {
   
   await saveReviewsCSV()
 
-  await saveCSVData()  
+  // await saveCSVData()  
 }
-cron.schedule('20 11 * * *', () => {
+cron.schedule('20 12 * * *', () => {
   console.log('Cron job started at midnight');
   importDataAndUpdateDB();
 });

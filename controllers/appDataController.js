@@ -49,29 +49,34 @@ export const getApps = async (req, res) => {
     };
 
     export const getReviewByAppName = async (req, res) => {
-        const { page = 1, limit = 20 } = req.query; // Default to page 1, limit 20      
+        const { page = 1, limit = 20 } = req.query;
+        
         try {
             const { appName } = req.params;
-        
+    
+            if (!appName) {
+                return res.status(400).json({ message: "App name is required" });
+            }
+    
             const currentPage = parseInt(page, 10);
             const perPage = parseInt(limit, 10);
             const skip = (currentPage - 1) * perPage;
-        
+    
             // Find the document containing reviews for the specific app
-            const appDocument = await appReview.findOne({ [appName]: { $exists: true } }).lean();
-        
+            const appDocument = await appReview.findOne({ appName }).lean();
+    
             if (!appDocument || !appDocument[appName]) {
                 return res.status(404).json({ message: `No reviews found for app: ${appName}` });
             }
-        
+    
             const reviews = appDocument[appName];
             const total = reviews.length;
             const paginatedReviews = reviews.slice(skip, skip + perPage);
-        
+    
             const lastPage = Math.ceil(total / perPage);
             const nextPage = currentPage < lastPage ? currentPage + 1 : null;
             const prevPage = currentPage > 1 ? currentPage - 1 : null;
-        
+    
             res.json({
                 data: paginatedReviews,
                 total,
@@ -79,14 +84,14 @@ export const getApps = async (req, res) => {
                 current_page: currentPage,
                 last_page: lastPage,
                 next_page_url: nextPage
-                ? `${req.protocol}://${req.get("host")}${req.baseUrl}${req.path}?page=${nextPage}&limit=${perPage}`
-                : null,
+                    ? `${req.protocol}://${req.get("host")}${req.baseUrl}${req.path}?page=${nextPage}&limit=${perPage}`
+                    : null,
                 prev_page_url: prevPage
-                ? `${req.protocol}://${req.get("host")}${req.baseUrl}${req.path}?page=${prevPage}&limit=${perPage}`
-                : null,
+                    ? `${req.protocol}://${req.get("host")}${req.baseUrl}${req.path}?page=${prevPage}&limit=${perPage}`
+                    : null,
             });
-            } catch (error) {
+        } catch (error) {
             res.status(500).json({ message: "Error fetching paginated reviews: " + error.message });
-            }
-        };
+        }
+    };
       
