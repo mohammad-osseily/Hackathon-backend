@@ -8,6 +8,7 @@ export const createRequest = async (req, res) => {
   const user_id = req.user.id;
 
   const {
+    appName,
     androidVer,
     size,
     price,
@@ -32,6 +33,7 @@ export const createRequest = async (req, res) => {
 
     const newRequest = new AiRequest({
       user_id,
+      appName,
       androidVer,
       size,
       price,
@@ -83,7 +85,12 @@ export const createRequest = async (req, res) => {
     res.status(201).json({
       message: "Request created successfully",
       rating_predictions: mlResponse.data.rating_predictions,
-      installs_predictions: mlResponse.data.installs_predictions, // Uncomment when using the ML model
+      installs_predictions: mlResponse.data.installs_predictions,
+      appName,
+      price,
+      categoryEncoded,
+      typeFree,
+      typePaid, // Uncomment when using the ML model
     });
   } catch (error) {
     res.status(500).json({ error: error.message });

@@ -7,6 +7,10 @@ const aiRequestSchema = new mongoose.Schema(
       ref: "User",
       required: true,
     },
+    appName: { 
+      type: String, 
+      required: true },
+
     androidVer: {
       type: String,
       required: true,
