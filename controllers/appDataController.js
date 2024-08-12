@@ -49,33 +49,32 @@ export const getApps = async (req, res) => {
 };
 
 export const getReviewByAppName = async (req, res) => {
+  console.log("Fetching reviews for app:", req.params.appName); // Debug log
+
   try {
     const { appName } = req.params;
     const { page = 1, limit = 50 } = req.query;
 
-    // Find the app reviews by appName
-    const reviews = await appReview.findOne({ [appName]: { $exists: true } });
+    const appReviews = await appReview.findOne({ app: appName });
 
-    if (!reviews) {
+    if (!appReviews) {
       return res
         .status(404)
         .json({ message: `No reviews found for app: ${appName}` });
     }
 
-    const allReviews = reviews[appName];
-
-    // Calculate pagination values
+    const allReviews = appReviews.reviews || [];
     const total = allReviews.length;
     const currentPage = parseInt(page);
     const perPage = parseInt(limit);
     const skip = (currentPage - 1) * perPage;
-
-    // Paginate the reviews
     const paginatedReviews = allReviews.slice(skip, skip + perPage);
 
     const lastPage = Math.ceil(total / perPage);
     const nextPage = currentPage < lastPage ? currentPage + 1 : null;
     const prevPage = currentPage > 1 ? currentPage - 1 : null;
+
+    console.log("Reviews found and paginated."); // Debug log
 
     return res.status(200).json({
       data: paginatedReviews,
@@ -95,6 +94,7 @@ export const getReviewByAppName = async (req, res) => {
         : null,
     });
   } catch (error) {
+    console.error("Error fetching reviews:", error); // Debug log
     res.status(500).json({ error: error.message });
   }
 };
