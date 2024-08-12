@@ -87,6 +87,7 @@ export const createRequest = async (req, res) => {
       message: "Request created successfully",
       rating_predictions: mlResponse.data.rating_predictions,
       installs_predictions: mlResponse.data.installs_predictions,
+      appName,
       size,
       price,
       category,
