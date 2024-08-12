@@ -50,7 +50,7 @@ export const getApps = async (req, res) => {
 
     export const getReviewByAppName = async (req, res) => {
         const { page = 1, limit = 20 } = req.query;
-        
+    
         try {
             const { appName } = req.params;
     
@@ -65,11 +65,11 @@ export const getApps = async (req, res) => {
             // Find the document containing reviews for the specific app
             const appDocument = await appReview.findOne({ appName }).lean();
     
-            if (!appDocument || !appDocument[appName]) {
+            if (!appDocument || !appDocument.reviews) {
                 return res.status(404).json({ message: `No reviews found for app: ${appName}` });
             }
     
-            const reviews = appDocument[appName];
+            const reviews = appDocument.reviews;
             const total = reviews.length;
             const paginatedReviews = reviews.slice(skip, skip + perPage);
     
@@ -94,4 +94,3 @@ export const getApps = async (req, res) => {
             res.status(500).json({ message: "Error fetching paginated reviews: " + error.message });
         }
     };
-      
