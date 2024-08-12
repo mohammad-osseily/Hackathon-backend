@@ -14,14 +14,14 @@ import { saveReviewsCSV } from "./data/importCSVReviews.js";
 dotenv.config();
 
 //function to update apps and appReviews collections at midnight 
-function importDataAndUpdateDB() {
+async function importDataAndUpdateDB() {
   console.log('Running the import and update process...');
   
+  await saveReviewsCSV()
 
-  saveCSVData()  
-  saveReviewsCSV()
+  await saveCSVData()  
 }
-cron.schedule('09 19 * * *', () => {
+cron.schedule('20 11 * * *', () => {
   console.log('Cron job started at midnight');
   importDataAndUpdateDB();
 });

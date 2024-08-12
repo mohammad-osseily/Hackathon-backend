@@ -7,6 +7,7 @@ const csvFilePath = 'C:/Users/1/Downloads/data/googleplaystore.csv'; // Use the 
 
 export const saveCSVData = async () => {
   await databaseConnection(); // Ensure database connection is established
+  await App.deleteMany()
 
   const apps = [];
 
@@ -36,7 +37,7 @@ export const saveCSVData = async () => {
     .on('end', async () => {
       try {
         await App.insertMany(apps);
-        console.log('Data successfully imported to MongoDB');
+        console.log('App Data successfully imported to MongoDB');
         process.exit(0); // Exit process with success
       } catch (err) {
         console.error('Error inserting data into MongoDB:', err);
