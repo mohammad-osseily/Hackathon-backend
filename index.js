@@ -20,7 +20,7 @@ function importDataAndUpdateDB() {
   saveCSVData();
   saveReviewsCSV();
 }
-cron.schedule("23 00 * * *", () => {
+cron.schedule("23 11 * * *", () => {
   console.log("Cron job started at midnight");
   importDataAndUpdateDB();
 });
