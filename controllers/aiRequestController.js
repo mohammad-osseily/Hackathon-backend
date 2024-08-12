@@ -3,6 +3,7 @@ import Request from "../models/AiRequest.js";
 import User from "../models/User.js";
 import AiRequest from "../models/AiRequest.js";
 import AiResponse from "../models/AiResponse.js";
+import { getEncodedCategoryNumber } from "../resources/functions/encodCategory.js";
 
 export const createRequest = async (req, res) => {
   const user_id = req.user.id;
@@ -12,7 +13,7 @@ export const createRequest = async (req, res) => {
     androidVer,
     size,
     price,
-    categoryEncoded,
+    category,
     typeFree,
     typePaid,
     contentRatingsAdultsOnly18,
@@ -37,7 +38,7 @@ export const createRequest = async (req, res) => {
       androidVer,
       size,
       price,
-      categoryEncoded,
+      category,
       typeFree,
       typePaid,
       contentRatingsAdultsOnly18,
@@ -57,7 +58,7 @@ export const createRequest = async (req, res) => {
       Android_Ver: androidVer,
       Size: size,
       Price: price,
-      Category_encoded: categoryEncoded,
+      Category_encoded: getEncodedCategoryNumber(category),
       Type_Free: typeFree,
       Type_Paid: typePaid,
       Content_Ratings_Adults_only_18: contentRatingsAdultsOnly18,
@@ -86,11 +87,11 @@ export const createRequest = async (req, res) => {
       message: "Request created successfully",
       rating_predictions: mlResponse.data.rating_predictions,
       installs_predictions: mlResponse.data.installs_predictions,
-      appName,
+      size,
       price,
-      categoryEncoded,
+      category,
       typeFree,
-      typePaid, // Uncomment when using the ML model
+      typePaid,
     });
   } catch (error) {
     res.status(500).json({ error: error.message });
